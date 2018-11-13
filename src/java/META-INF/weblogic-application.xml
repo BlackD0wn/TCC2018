@@ -1,0 +1,10 @@
+    <?xml version="1.0" encoding="UTF-8"?>
+    <weblogic-application>
+        <prefer-application-packages>
+            <package-name>org.jboss.logging.*</package-name>
+        </prefer-application-packages>
+
+        <prefer-application-resources>
+            <resource-name>org/jboss/logging/Logger.class</resource-name>
+        </prefer-application-resources>
+    </weblogic-application>
