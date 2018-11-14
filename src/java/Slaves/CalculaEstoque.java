@@ -54,7 +54,6 @@ public class CalculaEstoque {
        
        List<Movimentacao> movimentacoes = buscaMovimentacoesPorProduto(p);
 
-//        System.out.println(new Gson().toJson(p));
        int diferencaDias = cdd.diferencaDeDatas(new Date(),p.getDataCadastro());
         System.out.println("Tempo de datas = "+diferencaDias);
         if (diferencaDias < diasParaCalcular) {
@@ -63,15 +62,11 @@ public class CalculaEstoque {
             divisor = diasParaCalcular;
         }
        
-//        System.out.println(new Gson().toJson(movimentacoes));
-//        System.out.println("Media 0 :"+ media);
         for (Iterator<Movimentacao> iterator = movimentacoes.iterator(); iterator.hasNext();) {
             Movimentacao next = iterator.next();
             if (next.getTipo() == 0) {
-//                System.out.println("quantidade: "+ next.getQuantidade());
                 media+= next.getQuantidade();
                
-//                System.out.println("media for: "+media);
             }
         }
         
@@ -97,15 +92,6 @@ public class CalculaEstoque {
         p.setEstoqueIdeal(p.getPontoDeRessuprimento() + p.getDiasEstoqueDesejavel());
         p.setDiasEstoqueDisponivel(diasEstoqueDisponivel);
         p.setMediaConsumo(mediaGastoPorDia);
-//        
-//        System.out.println("media gasto por dia:"+ mediaGastoPorDia);
-//        
-//        System.out.println("EstoqueDisponivel = "+p.getSaldo());
-//        
-//        System.out.println("Estoque de Segurança: " + p.getEstoqueDeSeguranca() + " dias");
-//        System.out.println("Ponto de Ressuprimento: " + p.getPontoDeRessuprimento() + " dias");
-//        System.out.println("Estoque ideal: " + p.getEstoqueIdeal() + " dias");
-//        System.out.println("Estoque disponivel: " + p.getDiasEstoqueDisponivel()+ " dias");
       
         System.out.println("Dias de Estoque disponivel: "+p.getDiasEstoqueDisponivel());
         System.out.println("Ponto de Ressuprimento: "+p.getPontoDeRessuprimento());
