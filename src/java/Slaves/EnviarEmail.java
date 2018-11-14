@@ -50,8 +50,7 @@ public class EnviarEmail {
                              protected PasswordAuthentication getPasswordAuthentication() 
                              {
                                    return new PasswordAuthentication(c.getEmail(), c.getSenha());
-//                                   return new PasswordAuthentication("anjobruno92@gmail.com", "aygtjutnafgxgnpk");
-                             }
+                            }
                         });
              session.setDebug(true);
              
