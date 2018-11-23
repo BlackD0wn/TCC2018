@@ -23,7 +23,7 @@ public class CalculaABC {
     
     private int diasParaCalcular = 90;
     
-    private boolean filtraData(Movimentacao m){
+    private boolean dentroDoPrazoDoCalculo(Movimentacao m){
         Date d1 = m.getData(); 
         Date d2 = new Date(); 
         
@@ -38,7 +38,7 @@ public class CalculaABC {
     
     private List<Movimentacao> buscaMovimentacoesPorProduto(Produto p){
         MovimentacaoDAO dao = new MovimentacaoDAO();
-        List<Movimentacao> movimentacoes = dao.findByProduct(p);
+        List<Movimentacao> movimentacoes = dao.procurarPorProduto(p);
         List<Movimentacao> movimentacoesFiltradas = new ArrayList<Movimentacao>();
         CalculadorDiferencaDatas cdd = new CalculadorDiferencaDatas();
         for (Iterator<Movimentacao> iterator = movimentacoes.iterator(); iterator.hasNext();) {
@@ -57,7 +57,7 @@ public class CalculaABC {
     }
     
     private List<Produto> buscarProdutos(){
-        return new ProdutoDAO().findAll();
+        return new ProdutoDAO().procurarTodos();
     }
     
     private float CalculaValorTotalMovimentado(){
@@ -84,7 +84,7 @@ public class CalculaABC {
         float valorMovimetado = 0;
         
         MovimentacaoDAO dao = new MovimentacaoDAO();
-        List<Movimentacao> movimentacoes = dao.findByProduct(p);
+        List<Movimentacao> movimentacoes = dao.procurarPorProduto(p);
 
         for (Iterator<Movimentacao> iterator = movimentacoes.iterator(); iterator.hasNext();) {
             Movimentacao next = iterator.next();
@@ -100,7 +100,7 @@ public class CalculaABC {
         
         float valorTotal = CalculaValorTotalMovimentado();
         ProdutoDAO dao = new ProdutoDAO();
-        List<Produto> produtos = dao.findAll();
+        List<Produto> produtos = dao.procurarTodos();
         float teste = 0;
         
         for (Iterator<Produto> iterator = produtos.iterator(); iterator.hasNext();) {
@@ -120,7 +120,7 @@ public class CalculaABC {
     private void calculaABC(){
         
         ProdutoDAO dao = new ProdutoDAO();
-        List<Produto> produtos = dao.findByPorc();
+        List<Produto> produtos = dao.procurarOrdenadoPorcentagem();
         System.out.println(new Gson().toJson(produtos));
 
         int a = 75;
