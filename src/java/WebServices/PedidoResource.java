@@ -6,6 +6,7 @@
 package WebServices;
 
 import Connection.ConnectionFactory;
+import DAO.MovimentacaoDAO;
 import DAO.PedidoDAO;
 import DAO.ProdutoDAO;
 import Slaves.EnviarEmail;
@@ -44,7 +45,7 @@ public class PedidoResource {
     public void create(Pedido pedido) {
 
         ProdutoDAO pdao = new ProdutoDAO();
-        pedido.getProduto().setDataCadastro(pdao.find(pedido.getProduto()).getDataCadastro());
+        pedido.getProduto().setDataCadastro(pdao.find(pedido.getProduto().getId()).getDataCadastro());
         pedido.setDataEnvio(new Date());
         dao.create(pedido);
         this.send(pedido);
@@ -109,15 +110,15 @@ public class PedidoResource {
         try {
 
             ProdutoDAO pdao = new ProdutoDAO();
-            entity.getProduto().setDataCadastro(pdao.find(entity.getProduto()).getDataCadastro());
-            EnviarEmail ee;
-            ee = new EnviarEmail(entity.getConfig(), entity.getProduto().getFornecedor());
+            entity.getProduto().setDataCadastro(pdao.find(entity.getProduto().getId()).getDataCadastro());
+//            EnviarEmail ee;
+//            ee = new EnviarEmail(entity.getConfig(), entity.getProduto().getFornecedor());
             //         ee.enviarEmail(entity);
             entity.setEnviado(true);
             entity.setDataEnvio(new Date());
             System.out.println("Enviado, chegando no edit");
             dao.edit(entity);
-        } catch (MessagingException ex) {
+        } catch (Exception ex) {
             System.out.println("Caiu no exception");
             ex.printStackTrace();
         }
@@ -127,11 +128,26 @@ public class PedidoResource {
     @Path("receber")
     @Consumes({MediaType.APPLICATION_JSON})
     public void receberPedido(Pedido entity) {
+        
         entity.setDataEnvio(dao.find(entity.getID()).getDataEnvio());
         entity.getP().setDataCadastro(dao.find(entity.getID()).getP().getDataCadastro());
-        entity.getP().adicionaSaldo((int) entity.getQuantidade());
+        //entity.getP().adicionaSaldo((int) entity.getQuantidade());
         entity.setDataRecebido(new Date());
+        entity.setRecebido(true);
         dao.edit(entity);
+        
+        Movimentacao m = new Movimentacao();
+        MovimentacaoDAO mdao = new MovimentacaoDAO();
+        m.setPreco(mdao.ultimoPrecoPorProduto(entity.getProduto()));
+        m.setData(new Date());
+        m.setProduto(entity.getP());
+        m.setQuantidade(entity.getQuantidade());
+        m.setTipo(1);        
+        m.setUsuario(entity.getUsuario());
+        mdao.create(m);
+
+        
+        
     }
 
     @GET

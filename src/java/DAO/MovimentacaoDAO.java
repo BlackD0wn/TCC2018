@@ -111,6 +111,12 @@ public class MovimentacaoDAO extends AbstractDAO<Movimentacao> {
         return list;
     }
 
+    public float ultimoPrecoPorProduto(Produto p){
+        List<Movimentacao> list = null;
+        list = getEntityManager().createQuery("from Movimentacao where produto_id = :busca and tipo = 1").setParameter("busca", p.getId()).getResultList();
+        return list.get(list.size() -1 ).getPreco();
+    }
+    
     @Override
     protected EntityManager getEntityManager() {
         return Connection.ConnectionFactory.getConnection();
