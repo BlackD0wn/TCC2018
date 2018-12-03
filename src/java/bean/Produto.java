@@ -25,8 +25,6 @@ import org.hibernate.annotations.ColumnDefault;
 @XmlRootElement
 public class Produto {
 
-    
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -48,11 +46,10 @@ public class Produto {
     private float valorMovimentado;
     private float porcMovimentacao;
     private float mediaConsumo;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro;
 
-    
     public float getMediaConsumo() {
         return mediaConsumo;
     }
@@ -60,7 +57,7 @@ public class Produto {
     public void setMediaConsumo(float mediaConsumo) {
         this.mediaConsumo = mediaConsumo;
     }
-    
+
     public Date getDataCadastro() {
         return dataCadastro;
     }
@@ -68,6 +65,7 @@ public class Produto {
     public void setDataCadastro(Date dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
+
     public Integer getId() {
         return id;
     }
@@ -181,12 +179,11 @@ public class Produto {
     }
 
     public void adicionaSaldo(int quantidade) {
-        this.saldo+= quantidade;
+        this.saldo += quantidade;
     }
 
     public void removeSaldo(int quantidade) {
-        this.saldo-=quantidade;
+        this.saldo -= quantidade;
     }
 
-    
 }

@@ -31,52 +31,52 @@ public class EnviarEmail {
     private Address[] toUser;
     private Configuracao config;
     private Fornecedor fornecedor;
-    
-    public EnviarEmail(Configuracao c, Fornecedor d) throws MessagingException{
-            
-            props = new Properties();
-        
-            this.config = c;
-            this.fornecedor = d;
-        
-            props.put("mail.smtp.host", config.getSmtp());
-            props.put("mail.smtp.socketFactory.port", config.getPorta());
-            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.port", config.getPorta());
- 
-            session = Session.getDefaultInstance(props,
-                        new javax.mail.Authenticator() {
-                             protected PasswordAuthentication getPasswordAuthentication() 
-                             {
-                                   return new PasswordAuthentication(c.getEmail(), c.getSenha());
-                            }
-                        });
-             session.setDebug(true);
-             
-             message = new MimeMessage(session);
-             message.setFrom(new InternetAddress(c.getEmail())); //Remetente
- 
-    
+
+    public EnviarEmail(Configuracao c, Fornecedor d) throws MessagingException {
+
+        props = new Properties();
+
+        this.config = c;
+        this.fornecedor = d;
+
+        props.put("mail.smtp.host", config.getSmtp());
+        props.put("mail.smtp.socketFactory.port", config.getPorta());
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", config.getPorta());
+
+        session = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(c.getEmail(), c.getSenha());
+            }
+        });
+        session.setDebug(true);
+
+        message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(c.getEmail())); //Remetente
+
     }
-    
-    private void adicionaDestinatario(String email) throws AddressException, MessagingException{
+
+    private void adicionaDestinatario(String email) throws AddressException, MessagingException {
         toUser = InternetAddress.parse(email);
         message.setRecipients(Message.RecipientType.TO, toUser);
     }
-    
-    private void preparaEmail(String assunto, String corpo) throws MessagingException{
-                  message.setSubject(assunto);//Assunto
-                  message.setText(corpo);
-                
+
+    private void preparaEmail(String assunto, String corpo) throws MessagingException {
+        message.setSubject(assunto);//Assunto
+        message.setText(corpo);
+
     }
-    
-    private void enviaEmail() throws MessagingException{
-          /**Método para enviar a mensagem criada*/
-          Transport.send(message);
+
+    private void enviaEmail() throws MessagingException {
+        /**
+         * Método para enviar a mensagem criada
+         */
+        Transport.send(message);
     }
-    
-    public void enviarEmail(Pedido p){
+
+    public void enviarEmail(Pedido p) {
         try {
             adicionaDestinatario(fornecedor.getEmail());
             preparaEmail(p.getAssunto(), p.getCorpo());

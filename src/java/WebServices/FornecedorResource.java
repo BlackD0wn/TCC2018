@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -29,36 +29,35 @@ import javax.ws.rs.core.MediaType;
  *
  * @author hook
  */
-
 @Path("fornecedor")
-public class FornecedorResource{
+public class FornecedorResource {
 
     private EntityManager em = ConnectionFactory.getConnection();
     private FornecedorDAO dao = new FornecedorDAO();
     private Gson gson = new Gson();
-    
+
     @POST
-    @Consumes({ MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void create(Fornecedor entity) {
-         dao.create(entity);
+        dao.create(entity);
     }
-    
+
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(Fornecedor entity) {
-       
+
         if (entity.getPrazoDeEntrega() != dao.find(entity.getId()).getPrazoDeEntrega()) {
             CalculaEstoque calculo = new CalculaEstoque();
-            List<Produto> produtos = new ProdutoDAO().findByFornecedor(entity);
-            
+            List<Produto> produtos = new ProdutoDAO().procurarPorFornecedor(entity);
+
             for (Iterator<Produto> iterator = produtos.iterator(); iterator.hasNext();) {
                 Produto next = iterator.next();
                 calculo.calcular(next);
-            }   
+            }
         }
         dao.edit(entity);
     }
-    
+
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -72,44 +71,40 @@ public class FornecedorResource{
         return gson.toJson(dao.find(id));
     }
 
-
     @GET
     @Path("buscarTodos")
     @Produces({MediaType.APPLICATION_JSON})
     public String findAll() {
         System.out.println();
-        return gson.toJson(dao.findAll());
+        return gson.toJson(dao.procurarTodos());
     }
-    
+
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
     public String findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return gson.toJson(dao.findRange(from,to));
+        return gson.toJson(dao.findRange(from, to));
     }
-    
+
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_JSON})
     public String findByName(@PathParam("name") String busca) {
         return gson.toJson(dao.findByName(busca));
     }
-    
+
     @GET
     @Path("partName/{name}")
     @Produces({MediaType.APPLICATION_JSON})
     public String findByPartName(@PathParam("name") String busca) {
         return gson.toJson(dao.findByPartName(busca));
     }
-    
+
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(dao.count());
     }
-    
-   
-    
-    
+
 }

@@ -12,18 +12,18 @@ import javax.persistence.EntityManager;
  *
  * @author hook
  */
-public class ConfiguracaoDAO extends AbstractDAO<Configuracao>{
-    
+public class ConfiguracaoDAO extends AbstractDAO<Configuracao> {
+
     private EntityManager em;
-    
+
     public ConfiguracaoDAO() {
         super(Configuracao.class);
         em = Connection.ConnectionFactory.getConnection();
     }
-    
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

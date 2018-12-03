@@ -32,82 +32,87 @@ import javax.ws.rs.POST;
  *
  * @author hook
  */
-
 @Path("email")
-public class PedidoResource{
+public class PedidoResource {
 
     private EntityManager em = ConnectionFactory.getConnection();
     private PedidoDAO dao = new PedidoDAO();
     private Gson gson = new Gson();
-    
+
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Pedido entity) {
-      System.out.println(new Gson().toJson(entity));
-      dao.create(entity);
+    public void create(Pedido pedido) {
+
+        ProdutoDAO pdao = new ProdutoDAO();
+        pedido.getProduto().setDataCadastro(pdao.find(pedido.getProduto()).getDataCadastro());
+        pedido.setDataEnvio(new Date());
+        dao.create(pedido);
+        this.send(pedido);
+
     }
-    
+
     @GET
     @Path("name/produto/{name}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String findByProduto(@PathParam("name") String name){
-     String retorno = null;
-        try{ 
-             ProdutoDAO pdao = new ProdutoDAO();
-             List<Produto> p = pdao.findByPartName(name);
-             
-             
-             List<Pedido> m = new ArrayList<>(); 
-             if (!p.isEmpty()) {
-                 for (Iterator<Produto> iterator = p.iterator(); iterator.hasNext();) {
-                     Produto next = iterator.next();
-                     m.addAll(dao.findByProduct(next));
-                 }
+    public String findByProduto(@PathParam("name") String name) {
+        String retorno = null;
+        try {
+            ProdutoDAO pdao = new ProdutoDAO();
+            List<Produto> p = pdao.findByPartName(name);
+
+            List<Pedido> m = new ArrayList<>();
+            if (!p.isEmpty()) {
+                for (Iterator<Produto> iterator = p.iterator(); iterator.hasNext();) {
+                    Produto next = iterator.next();
+                    m.addAll(dao.procurarPorProduto(next));
+                }
                 retorno = gson.toJson(m);
             }
-     }catch(Exception e){
-         return null;
-     }
-     return retorno;
+        } catch (Exception e) {
+            return null;
+        }
+        return retorno;
     }
-    
+
     @GET
     @Path("findEnviados")
     @Produces({MediaType.APPLICATION_JSON})
     public String findEnviados() {
-        return gson.toJson(dao.findEnviados());
+        return gson.toJson(dao.procurarEnviados());
     }
-    
+
     @GET
     @Path("findRecebidos")
     @Produces({MediaType.APPLICATION_JSON})
     public String findRecebidos() {
-        return gson.toJson(dao.findRecebido());
+        return gson.toJson(dao.procurarRecebido());
     }
-    
+
     @GET
     @Path("findNaoEnviados")
     @Produces({MediaType.APPLICATION_JSON})
     public String findNaoEnviados() {
-        return gson.toJson(dao.findNaoEnviados());
+        return gson.toJson(dao.procurarNaoEnviados());
     }
-    
-        
+
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(Pedido entity) {
         dao.edit(entity);
     }
-    
+
     @PUT
     @Path("send")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void send(Pedido entity){
-        
+    public void send(Pedido entity) {
+
         try {
+
+            ProdutoDAO pdao = new ProdutoDAO();
+            entity.getProduto().setDataCadastro(pdao.find(entity.getProduto()).getDataCadastro());
             EnviarEmail ee;
-            ee = new EnviarEmail(entity.getConfig(),entity.getF());
-            ee.enviarEmail(entity);
+            ee = new EnviarEmail(entity.getConfig(), entity.getProduto().getFornecedor());
+            //         ee.enviarEmail(entity);
             entity.setEnviado(true);
             entity.setDataEnvio(new Date());
             System.out.println("Enviado, chegando no edit");
@@ -117,7 +122,7 @@ public class PedidoResource{
             ex.printStackTrace();
         }
     }
-    
+
     @PUT
     @Path("receber")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -128,8 +133,7 @@ public class PedidoResource{
         entity.setDataRecebido(new Date());
         dao.edit(entity);
     }
-    
-    
+
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -142,21 +146,21 @@ public class PedidoResource{
     @Produces({MediaType.APPLICATION_JSON})
     public String findAll() {
         System.out.println();
-        return gson.toJson(dao.findAll());
+        return gson.toJson(dao.procurarTodos());
     }
-    
+
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
     public String findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return gson.toJson(dao.findRange(from,to));
+        return gson.toJson(dao.findRange(from, to));
     }
-    
+
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(dao.count());
     }
-    
+
 }

@@ -23,11 +23,10 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("configuracao")
 public class ConfiguracaoResource {
-    
+
     private ConfiguracaoDAO dao = new ConfiguracaoDAO();
     private Gson gson = new Gson();
-    
-    
+
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -36,25 +35,24 @@ public class ConfiguracaoResource {
     }
 
     @POST
-    @Consumes({ MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void create(Configuracao entity) {
         System.out.println("Chegou:\n");
         System.out.println(new Gson().toJson(entity));
-       dao.create(entity);
+        dao.create(entity);
     }
-    
+
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(Configuracao entity) {
         dao.edit(entity);
     }
-    
+
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(dao.count());
     }
-    
-    
+
 }

@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 public class Fornecedor implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -135,7 +135,6 @@ public class Fornecedor implements Serializable {
         this.logradouro = logradouro;
     }
 
-   
     public String getBairro() {
         return bairro;
     }
@@ -143,13 +142,5 @@ public class Fornecedor implements Serializable {
     public void setBairro(String bairro) {
         this.bairro = bairro;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

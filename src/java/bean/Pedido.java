@@ -22,21 +22,16 @@ import javax.persistence.TemporalType;
 @Entity
 public class Pedido {
 
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ID;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
-    private Produto p;
-    
-    @OneToOne(cascade = CascadeType.ALL)
-    private Fornecedor f;
-    
+    private Produto produto;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Configuracao config;
 
-  
     public Date getDataRecebido() {
         return dataRecebido;
     }
@@ -52,20 +47,19 @@ public class Pedido {
     public void setRecebido(boolean recebido) {
         this.recebido = recebido;
     }
-    
+
     private String corpo;
     private String assunto;
-    private long quantidade;
-    
+    private int quantidade;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataEnvio;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataRecebido;
-    
+
     private boolean recebido;
     private boolean enviado;
-
 
     public Configuracao getConfig() {
         return config;
@@ -75,24 +69,16 @@ public class Pedido {
         this.config = config;
     }
 
-    public long getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(long quantidade) {
-        this.quantidade = quantidade;
-    }
-   
     public Pedido() {
     }
 
-    public void preparaEmail(){
-        assunto = "Pedido - "+config.getNomeFantasia();
-        corpo = "Produto: "+p.getNome()+
-                "\nQuantidade:"+quantidade+
-                "\nEntrega em:"+f.getPrazoDeEntrega();
+    public void preparaEmail() {
+        assunto = "Pedido - " + config.getNomeFantasia();
+        corpo = "Produto: " + produto.getNome()
+                + "\nQuantidade:" + quantidade
+                + "\nEntrega em:" + produto.getFornecedor().getPrazoDeEntrega();
     }
-    
+
     public Integer getID() {
         return ID;
     }
@@ -102,19 +88,27 @@ public class Pedido {
     }
 
     public Produto getP() {
-        return p;
+        return produto;
     }
 
     public void setP(Produto p) {
-        this.p = p;
+        this.produto = p;
     }
 
-    public Fornecedor getF() {
-        return f;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setF(Fornecedor f) {
-        this.f = f;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 
     public String getCorpo() {
@@ -148,5 +142,5 @@ public class Pedido {
     public void setEnviado(boolean enviado) {
         this.enviado = enviado;
     }
-    
+
 }

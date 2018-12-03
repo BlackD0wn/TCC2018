@@ -14,7 +14,6 @@ import javax.persistence.Id;
  *
  * @author hook
  */
-
 @Entity
 public class Configuracao {
 
@@ -37,7 +36,7 @@ public class Configuracao {
 
     public Configuracao() {
     }
-    
+
     public Integer getID() {
         return ID;
     }
@@ -149,5 +148,5 @@ public class Configuracao {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    
+
 }

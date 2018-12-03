@@ -10,6 +10,8 @@ import DAO.MovimentacaoDAO;
 import DAO.PermissoesDAO;
 import DAO.ProdutoDAO;
 import DAO.UsuarioDAO;
+import Slaves.CalculaABC;
+import Slaves.CalculaEstoque;
 import Slaves.CalculadorDiferencaDatas;
 import WebServices.MovimentacaoResource;
 import bean.Fornecedor;
@@ -98,24 +100,30 @@ public class Main {
 //    Produto p1 = pdao.find(2);
 //    
 //
-    MovimentacaoResource mreResource = new MovimentacaoResource();
-        
-        
-
-    Usuario u = new UsuarioDAO().find(1);
-    Produto p = new ProdutoDAO().find(7);
+//    MovimentacaoResource mreResource = new MovimentacaoResource();
+//        
+//        
+//
+//    Usuario u = new UsuarioDAO().find(1);
+//    Produto p = new ProdutoDAO().find(7);
+////    
+//    Movimentacao m = new Movimentacao();
 //    
-    Movimentacao m = new Movimentacao();
-    
-    m.setProduto(p);
-    m.setQuantidade(1);
-    m.setTipo(0);
-    m.setUsuario(u);
+//    m.setProduto(p);
+//    m.setQuantidade(1);
+//    m.setTipo(0);
+//    m.setUsuario(u);
+//
+//    new MovimentacaoDAO().create(m);
 
-    new MovimentacaoDAO().create(m);
+//        CalculaABC c = new CalculaABC();
+//        c.calcular();
+        
+
+
 //    mreResource.create(m);
 //    ProdutoDAO pdao = new ProdutoDAO();
-//    List<Produto> lista = pdao.findAll();
+//    List<Produto> lista = pdao.procurarTodos();
 //    
 //        for (Iterator<Produto> iterator = lista.iterator(); iterator.hasNext();) {
 //            Produto next = iterator.next();
@@ -125,6 +133,19 @@ public class Main {
  
 //        }
 
+    CalculaABC ca = new CalculaABC();
+    ca.calcular();
+    
+    ProdutoDAO pdao = new ProdutoDAO();
+    List<Produto> produtos = pdao.procurarTodos();
+    CalculaEstoque ce = new CalculaEstoque();
+    
+        for (Iterator<Produto> iterator = produtos.iterator(); iterator.hasNext();) {
+            Produto next = iterator.next();
+            ce.calcular(next);
+        }
+
+        System.out.println(new MovimentacaoDAO().find(14).getProduto().getDataCadastro().toString());
 
     }
 

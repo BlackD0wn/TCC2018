@@ -14,33 +14,32 @@ import javax.persistence.EntityManager;
  * @author hook
  */
 public class Usuario2Dao {
-    
-    
+
     public boolean create(Usuario entity) {
-      try{
-        getEntityManager().getTransaction().begin();
-        getEntityManager().merge(entity); 
-        getEntityManager().getTransaction().commit();
-        
-      }catch(Exception e){
-          e.printStackTrace();
-        getEntityManager().getTransaction().rollback();
-         return false;
-      }
-      return true;
+        try {
+            getEntityManager().getTransaction().begin();
+            getEntityManager().merge(entity);
+            getEntityManager().getTransaction().commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            getEntityManager().getTransaction().rollback();
+            return false;
+        }
+        return true;
     }
-    
-     public ArrayList<Usuario> findAll() {
-      
-        ArrayList<Usuario>  list = new ArrayList<Usuario>();
+
+    public ArrayList<Usuario> findAll() {
+
+        ArrayList<Usuario> list = new ArrayList<Usuario>();
         list = (ArrayList<Usuario>) getEntityManager().createQuery("From Usuario").getResultList();
-      
-      return list;
+
+        return list;
     }
 
     private EntityManager getEntityManager() {
         return Connection.ConnectionFactory.getConnection();
-    
+
     }
-    
+
 }

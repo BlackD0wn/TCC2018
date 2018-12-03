@@ -26,9 +26,10 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("usuario")
 public class UsuarioResource {
+
     private Gson gson = new Gson();
     private UsuarioDAO dao = new UsuarioDAO();
-    
+
     @Context
     private UriInfo context;
 
@@ -37,86 +38,81 @@ public class UsuarioResource {
      */
     public UsuarioResource() {
     }
-    
-    
-    
+
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Usuario entity) {
-          dao.create(entity);
+        dao.create(entity);
     }
-    
+
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(Usuario entity) {
         System.out.println(entity.toString());
         dao.edit(entity);
     }
-    
+
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String find(@PathParam("id") Integer id){
+    public String find(@PathParam("id") Integer id) {
         Usuario u = dao.find(id);
         return gson.toJson(u);
     }
-    
+
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String findByName(@PathParam("name") String name){
-     String retorno;
-        try{ 
-             retorno = gson.toJson(dao.findByName(name));
-     
-     }catch(Exception e){
-         return null;
-     }
-     return retorno;
+    public String findByName(@PathParam("name") String name) {
+        String retorno;
+        try {
+            retorno = gson.toJson(dao.findByName(name));
+
+        } catch (Exception e) {
+            return null;
+        }
+        return retorno;
     }
-    
+
     @GET
     @Path("namePart/{name}")
     @Produces({MediaType.APPLICATION_JSON})
     public String findByPartName(@PathParam("name") String busca) {
         return gson.toJson(dao.findByPartName(busca));
     }
-    
-    
-    
+
     //delete não esta funcionando aqui, verificar depois
     @GET
     @Path("remove/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public String remove(@PathParam("id") Integer id) {
-       Usuario busca = dao.find(id);
-       dao.remove(busca);
-       
-       return gson.toJson(busca);
+        Usuario busca = dao.find(id);
+        dao.remove(busca);
+
+        return gson.toJson(busca);
     }
-    
+
     @GET
     @Path("findAll")
     @Produces({MediaType.APPLICATION_JSON})
     public String findAll() {
-       List<Usuario> u = dao.findAll();
-       return gson.toJson(u);
+        List<Usuario> u = dao.procurarTodos();
+        return gson.toJson(u);
     }
-    
+
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public String findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-       List<Usuario> u = dao.findRange(from, to);
-       return gson.toJson(u);
+        List<Usuario> u = dao.findRange(from, to);
+        return gson.toJson(u);
     }
 
     @GET
     @Path("count")
     @Produces({MediaType.APPLICATION_JSON})
     public String count() {
-       List<Usuario> u = dao.findAll();
-       return gson.toJson(u.size());
+        List<Usuario> u = dao.procurarTodos();
+        return gson.toJson(u.size());
     }
 }
-

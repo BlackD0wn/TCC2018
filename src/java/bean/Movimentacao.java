@@ -23,11 +23,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 public class Movimentacao {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ID;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date data;
     private int quantidade;
@@ -43,7 +43,7 @@ public class Movimentacao {
     private int tipo;
     @OneToOne(cascade = CascadeType.DETACH)
     private Produto produto;
-    
+
     @OneToOne(cascade = CascadeType.DETACH)
     private Usuario usuario;
 
@@ -62,7 +62,7 @@ public class Movimentacao {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    
+
     public Movimentacao() {
     }
 
@@ -89,7 +89,7 @@ public class Movimentacao {
     public void setTipo(int tipo) {
         this.tipo = tipo;
     }
-    
+
     public Produto getProduto() {
         return produto;
     }
@@ -97,6 +97,5 @@ public class Movimentacao {
     public void setProduto(Produto produto) {
         this.produto = produto;
     }
-    
-    
+
 }

@@ -14,11 +14,11 @@ import javax.persistence.Persistence;
  * @author hook
  */
 public abstract class ConnectionFactory {
-    
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("tcc");
+
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("tcc2");
     private static EntityManager em = emf.createEntityManager();
-    
-    public static EntityManager getConnection(){
+
+    public static EntityManager getConnection() {
         return em;
     }
 }

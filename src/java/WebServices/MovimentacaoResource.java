@@ -9,13 +9,19 @@ import Connection.ConnectionFactory;
 import DAO.MovimentacaoDAO;
 import DAO.ProdutoDAO;
 import DAO.UsuarioDAO;
+import bean.DataModel;
 import bean.Movimentacao;
 import bean.Produto;
 import bean.Usuario;
 import com.google.gson.Gson;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -30,94 +36,110 @@ import javax.ws.rs.core.MediaType;
 /**
  *
  * @author hook
- */   
+ */
 @Path("movimentacao")
-public class MovimentacaoResource{
+public class MovimentacaoResource {
 
     private EntityManager em = ConnectionFactory.getConnection();
     private MovimentacaoDAO dao = new MovimentacaoDAO();
     private Gson gson = new Gson();
-    
-        
+    private Date dataM;
+
     @GET
     @Path("name/produto/{name}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String findByFornecedor(@PathParam("name") String name){
-     String retorno = null;
-        try{ 
-             ProdutoDAO pdao = new ProdutoDAO();
-             List<Produto> p = pdao.findByPartName(name);
-             List<Movimentacao> m = new ArrayList<>(); 
-             if (!p.isEmpty()) {
-                 for (Iterator<Produto> iterator = p.iterator(); iterator.hasNext();) {
-                     Produto next = iterator.next();
-                     m.addAll(dao.findByProduct(next));
-                 }
+    public String findByFornecedor(@PathParam("name") String name) {
+        String retorno = null;
+        try {
+            ProdutoDAO pdao = new ProdutoDAO();
+            List<Produto> p = pdao.findByPartName(name);
+            List<Movimentacao> m = new ArrayList<>();
+            if (!p.isEmpty()) {
+                for (Iterator<Produto> iterator = p.iterator(); iterator.hasNext();) {
+                    Produto next = iterator.next();
+                    m.addAll(dao.procurarPorProduto(next));
+                }
                 retorno = gson.toJson(m);
             }
-     }catch(Exception e){
-         return null;
-     }
-     return retorno;
+        } catch (Exception e) {
+            return null;
+        }
+        return retorno;
     }
-    
+
     @GET
     @Path("name/usuario/{name}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String findByUsuario(@PathParam("name") String name){
-     String retorno = null;
-        try{ 
-             UsuarioDAO udao = new UsuarioDAO();
-             List<Usuario> p = udao.findByPartName(name);
-             List<Movimentacao> m = new ArrayList<>();
-             if (!p.isEmpty()) {
-                 for (Iterator<Usuario> iterator = p.iterator(); iterator.hasNext();) {
-                     Usuario next = iterator.next();
-                     m.addAll(dao.findByUser(next));
-                 }
-                 
+    public String findByUsuario(@PathParam("name") String name) {
+        String retorno = null;
+        try {
+            UsuarioDAO udao = new UsuarioDAO();
+            List<Usuario> p = udao.findByPartName(name);
+            List<Movimentacao> m = new ArrayList<>();
+            if (!p.isEmpty()) {
+                for (Iterator<Usuario> iterator = p.iterator(); iterator.hasNext();) {
+                    Usuario next = iterator.next();
+                    m.addAll(dao.procurarPorUsuario(next));
+                }
+
                 retorno = gson.toJson(m);
             }
-     }catch(Exception e){
-         return null;
-     }
-     return retorno;
+        } catch (Exception e) {
+            return null;
+        }
+        return retorno;
     }
-    
-    
-    
+
     @GET
     @Path("name/type/{type}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String findByTipo(@PathParam("type") int tipo){
-     String retorno;
-        try{ 
-             retorno = gson.toJson(dao.findByName("a"));
-     
-     }catch(Exception e){
-         return null;
-     }
-     return retorno;
+    public String findByTipo(@PathParam("type") int tipo) {
+        String retorno;
+        try {
+            retorno = gson.toJson(dao.findByName("a"));
+
+        } catch (Exception e) {
+            return null;
+        }
+        return retorno;
     }
-    
+
     @POST
-    @Consumes({ MediaType.APPLICATION_JSON})
-    public void create(Movimentacao entity) {
-      System.out.println(entity.toString());
-      dao.create(entity);
-    }
-    
-    
-    @PUT
+    @Path("data")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(Movimentacao entity) {
-        dao.edit(entity);
+    public void createData(DataModel data) {
+        System.out.println(new Gson().toJson(data));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
+        try {
+            this.dataM = sdf.parse(data.getData());
+            tests.Data.dataS.setData(dataM);
+            System.out.println("Data Convertida: " + dataM.toString());
+
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
     }
-    
+
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         dao.remove(dao.find(id));
+    }
+
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void create(Movimentacao entity) {
+        System.out.println(entity.toString());
+        System.out.println("Data Salva: " + tests.Data.dataS.getData());
+//      entity.setData(tests.Data.dataS.getData());
+        dao.create(entity);
+    }
+
+    @PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void edit(Movimentacao entity) {
+        dao.edit(entity);
     }
 
     @GET
@@ -127,30 +149,25 @@ public class MovimentacaoResource{
         return gson.toJson(dao.find(id));
     }
 
-
     @GET
     @Path("buscarTodos")
     @Produces({MediaType.APPLICATION_JSON})
     public String findAll() {
-        return gson.toJson(dao.findAll());
+        return gson.toJson(dao.procurarTodos());
     }
-    
+
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
     public String findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return gson.toJson(dao.findRange(from,to));
+        return gson.toJson(dao.findRange(from, to));
     }
-    
-    
+
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(dao.count());
     }
-    
-    
-}
-    
 
+}

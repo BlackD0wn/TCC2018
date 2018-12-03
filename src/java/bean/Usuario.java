@@ -25,18 +25,17 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ID;
-    @Column(unique=true, nullable=false)
+    @Column(unique = true, nullable = false)
     private String nome;
     private String senha;
     private boolean ativo;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     private Permissoes permissoes;
 
     public Permissoes getPermissoes() {
         return permissoes;
     }
-    
 
     public void setPermissoes(Permissoes permissoes) {
         this.permissoes = permissoes;
@@ -65,7 +64,6 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    
 
     public Integer getID() {
         return ID;
@@ -74,5 +72,5 @@ public class Usuario {
     public void setID(Integer ID) {
         this.ID = ID;
     }
-    
+
 }

@@ -9,8 +9,6 @@ package WebServices;
  *
  * @author hook
  */
-
-
 import DAO.PermissoesDAO;
 import bean.Permissoes;
 import com.google.gson.Gson;
@@ -25,24 +23,23 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("permissoes")
-public class PermissoesResource{
+public class PermissoesResource {
 
     private PermissoesDAO dao = new PermissoesDAO();
     private Gson gson = new Gson();
-    
-    
+
     @POST
-    @Consumes({ MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void create(Permissoes entity) {
-       dao.create(entity);
+        dao.create(entity);
     }
-    
+
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(Permissoes entity) {
         dao.edit(entity);
     }
-    
+
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -56,21 +53,19 @@ public class PermissoesResource{
         return gson.toJson(dao.find(id));
     }
 
-
 //    @GET
 //    @Path("buscarTodos")
 //    @Produces({MediaType.APPLICATION_JSON})
-//    public String findAll() {
-//        return gson.toJson(dao.findAll());
+//    public String procurarTodos() {
+//        return gson.toJson(dao.procurarTodos());
 //    }
 //    
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
     public String findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return gson.toJson(dao.findRange(from,to));
+        return gson.toJson(dao.findRange(from, to));
     }
-    
 
     @GET
     @Path("count")
@@ -78,7 +73,5 @@ public class PermissoesResource{
     public String countREST() {
         return String.valueOf(dao.count());
     }
-    
-    
+
 }
-    

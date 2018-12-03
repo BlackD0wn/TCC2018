@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
     extender abstractDAO
 
-*/
+ */
 package DAO;
 
 import bean.Usuario;
@@ -18,7 +18,7 @@ import javax.persistence.EntityManager;
  *
  * @author hook
  */
-public class UsuarioDAO extends AbstractDAO<Usuario>{
+public class UsuarioDAO extends AbstractDAO<Usuario> {
 
     public UsuarioDAO() {
         super(Usuario.class);
@@ -30,11 +30,10 @@ public class UsuarioDAO extends AbstractDAO<Usuario>{
     }
 
     @Override
-    public List<Usuario> findAll() {
+    public List<Usuario> procurarTodos() {
         List<Usuario> list = null;
         list = getEntityManager().createQuery("From Usuario order by nome").getResultList();
         return list;
     }
-    
-}
 
+}

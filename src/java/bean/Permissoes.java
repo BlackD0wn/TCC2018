@@ -16,7 +16,7 @@ import javax.persistence.Id;
  */
 @Entity
 public class Permissoes {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ID;
@@ -85,7 +85,5 @@ public class Permissoes {
 
     public Permissoes() {
     }
-    
-    
-    
+
 }

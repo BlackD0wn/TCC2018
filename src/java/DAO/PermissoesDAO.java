@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
  *
  * @author hook
  */
-public class PermissoesDAO extends AbstractDAO<Permissoes>{
+public class PermissoesDAO extends AbstractDAO<Permissoes> {
 
     public PermissoesDAO() {
         super(Permissoes.class);
@@ -21,7 +21,7 @@ public class PermissoesDAO extends AbstractDAO<Permissoes>{
     @Override
     protected EntityManager getEntityManager() {
         return Connection.ConnectionFactory.getConnection();
-    
+
     }
-    
+
 }
