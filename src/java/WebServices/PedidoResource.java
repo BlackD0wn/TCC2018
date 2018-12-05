@@ -9,7 +9,7 @@ import Connection.ConnectionFactory;
 import DAO.MovimentacaoDAO;
 import DAO.PedidoDAO;
 import DAO.ProdutoDAO;
-import Slaves.EnviarEmail;
+import Util.EnviarEmail;
 import bean.Movimentacao;
 import com.google.gson.Gson;
 import javax.persistence.EntityManager;
@@ -116,10 +116,8 @@ public class PedidoResource {
             //         ee.enviarEmail(entity);
             entity.setEnviado(true);
             entity.setDataEnvio(new Date());
-            System.out.println("Enviado, chegando no edit");
             dao.edit(entity);
         } catch (Exception ex) {
-            System.out.println("Caiu no exception");
             ex.printStackTrace();
         }
     }
@@ -161,7 +159,6 @@ public class PedidoResource {
     @Path("buscarTodos")
     @Produces({MediaType.APPLICATION_JSON})
     public String findAll() {
-        System.out.println();
         return gson.toJson(dao.procurarTodos());
     }
 

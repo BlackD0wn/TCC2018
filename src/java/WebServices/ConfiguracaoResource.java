@@ -37,8 +37,6 @@ public class ConfiguracaoResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Configuracao entity) {
-        System.out.println("Chegou:\n");
-        System.out.println(new Gson().toJson(entity));
         dao.create(entity);
     }
 

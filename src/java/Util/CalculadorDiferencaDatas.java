@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Slaves;
+package Util;
 
 import java.util.Date;
 
@@ -15,8 +15,6 @@ public class CalculadorDiferencaDatas {
 
     public int diferencaDeDatas(Date inicio, Date fim) {
 
-//        System.out.println("Inicio: "+inicio.toString());
-//        System.out.println("Fim: "+fim.toString());
         long dt = (inicio.getTime() - fim.getTime()); // 1 hora para compensar horário de verão
         int dias = (int) (dt / 86400000L); // passaram-se 67111 dias
 

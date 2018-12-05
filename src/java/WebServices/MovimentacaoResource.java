@@ -9,7 +9,6 @@ import Connection.ConnectionFactory;
 import DAO.MovimentacaoDAO;
 import DAO.ProdutoDAO;
 import DAO.UsuarioDAO;
-import bean.DataModel;
 import bean.Movimentacao;
 import bean.Produto;
 import bean.Usuario;
@@ -104,22 +103,7 @@ public class MovimentacaoResource {
         return retorno;
     }
 
-    @POST
-    @Path("data")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void createData(DataModel data) {
-        System.out.println(new Gson().toJson(data));
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        sdf.setLenient(false);
-        try {
-            this.dataM = sdf.parse(data.getData());
-            tests.Data.dataS.setData(dataM);
-            System.out.println("Data Convertida: " + dataM.toString());
-
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-    }
+    
 
     @DELETE
     @Path("{id}")
@@ -130,9 +114,6 @@ public class MovimentacaoResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Movimentacao entity) {
-        System.out.println(entity.toString());
-        System.out.println("Data Salva: " + tests.Data.dataS.getData());
-//      entity.setData(tests.Data.dataS.getData());
         dao.create(entity);
     }
 

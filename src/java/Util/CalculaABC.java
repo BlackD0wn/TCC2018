@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Slaves;
+package Util;
 
 import DAO.MovimentacaoDAO;
 import DAO.ProdutoDAO;
@@ -64,7 +64,6 @@ public class CalculaABC {
         List<Produto> produtos = buscarProdutos();
         List<Movimentacao> movimentacoes;
         float valorTotalMovimentado = 0;
-        System.out.println("Produtos: " + new Gson().toJson(produtos));
 
         for (Iterator<Produto> iterator = produtos.iterator(); iterator.hasNext();) {
             Produto next = iterator.next();
@@ -121,7 +120,6 @@ public class CalculaABC {
 
         ProdutoDAO dao = new ProdutoDAO();
         List<Produto> produtos = dao.procurarOrdenadoPorcentagem();
-        System.out.println(new Gson().toJson(produtos));
 
         int a = 45;
         int b = a + 25;
@@ -144,7 +142,6 @@ public class CalculaABC {
             atualizaProduto(next);
 
         }
-        System.out.println("Total Movimentado = " + total);
 
     }
 

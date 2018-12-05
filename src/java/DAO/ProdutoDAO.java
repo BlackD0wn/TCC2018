@@ -5,7 +5,7 @@
  */
 package DAO;
 
-import Slaves.CalculaEstoque;
+import Util.CalculaEstoque;
 import bean.Fornecedor;
 import bean.Produto;
 import com.google.gson.Gson;
@@ -34,7 +34,6 @@ public class ProdutoDAO extends AbstractDAO<Produto> {
         Date d = new Date();
         entity.setDataCadastro(d);
 
-        System.out.println("Criando: " + new Gson().toJson(entity.getDataCadastro()));
         return super.create(entity);
 
     }
@@ -51,8 +50,9 @@ public class ProdutoDAO extends AbstractDAO<Produto> {
             CalculaEstoque ce = new CalculaEstoque();
 //        ce.calcular(entity);
         } catch (Exception e) {
-            System.out.println("Não foi possivel recalcuar o estoque");
             //todo
+            e.printStackTrace();
+
         }
         return retorno;
 

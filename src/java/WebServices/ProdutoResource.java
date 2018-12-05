@@ -34,7 +34,6 @@ public class ProdutoResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Produto entity) {
-        System.out.println(new Gson().toJson(entity));
         entity.setDiasEstoqueDisponivel(-1);
         dao.create(entity);
     }

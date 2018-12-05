@@ -48,7 +48,6 @@ public class UsuarioResource {
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(Usuario entity) {
-        System.out.println(entity.toString());
         dao.edit(entity);
     }
 

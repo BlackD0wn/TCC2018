@@ -8,7 +8,7 @@ package WebServices;
 import Connection.ConnectionFactory;
 import DAO.FornecedorDAO;
 import DAO.ProdutoDAO;
-import Slaves.CalculaEstoque;
+import Util.CalculaEstoque;
 import bean.Fornecedor;
 import bean.Produto;
 import com.google.gson.Gson;
@@ -75,7 +75,6 @@ public class FornecedorResource {
     @Path("buscarTodos")
     @Produces({MediaType.APPLICATION_JSON})
     public String findAll() {
-        System.out.println();
         return gson.toJson(dao.procurarTodos());
     }
 

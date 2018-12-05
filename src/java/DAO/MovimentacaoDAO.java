@@ -5,8 +5,8 @@
  */
 package DAO;
 
-import Slaves.CalculaABC;
-import Slaves.CalculaEstoque;
+import Util.CalculaABC;
+import Util.CalculaEstoque;
 import bean.Movimentacao;
 import bean.Produto;
 import bean.Usuario;
@@ -29,12 +29,10 @@ public class MovimentacaoDAO extends AbstractDAO<Movimentacao> {
     public boolean create(Movimentacao entity) {
         boolean retorno;
 
-//        System.out.println(entity.getProduto().getDataCadastro().toString());
-        //recupera informaçoes omitidas (datas)
+      //recupera informaçoes omitidas (datas)
         Produto p1 = new ProdutoDAO().find(entity.getProduto().getId());
         entity.setProduto(p1);
 
-        System.out.println(entity.getProduto().getDataCadastro().toString());
 
         //  entity.setData(tests.Data.dataS.getData());
         entity.setData(new Date());
@@ -54,11 +52,9 @@ public class MovimentacaoDAO extends AbstractDAO<Movimentacao> {
         retorno = super.create(entity);
 
         if (entity.getTipo() == 1) {
-            System.out.println("Calculando ABC");
             CalculaABC calculo = new CalculaABC();
             calculo.calcular();
         } else if (entity.getTipo() == 0) {
-            System.out.println("Calculando estoque");
             CalculaEstoque calculo = new CalculaEstoque();
             calculo.calcular(p);
         }
@@ -68,13 +64,11 @@ public class MovimentacaoDAO extends AbstractDAO<Movimentacao> {
 
     public List<Movimentacao> procurarPorProduto(Produto p) {
         List<Movimentacao> list = null;
-        System.out.println(p.getId());
         try {
             list = getEntityManager().createQuery("from Movimentacao where produto_id = :busca").setParameter("busca", p.getId()).getResultList();
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         return list;
     }
@@ -82,12 +76,9 @@ public class MovimentacaoDAO extends AbstractDAO<Movimentacao> {
     public List<Movimentacao> procurarPorUsuario(Usuario u) {
         List<Movimentacao> list = null;
         try {
-            System.out.println("id: " + u.getID());
             list = getEntityManager().createQuery("from Movimentacao m where usuario = :busca").setParameter("busca", u).getResultList();
-            System.out.println(new Gson().toJson(list));
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         return list;
     }
@@ -99,7 +90,6 @@ public class MovimentacaoDAO extends AbstractDAO<Movimentacao> {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         return list;
     }

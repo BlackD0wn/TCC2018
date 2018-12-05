@@ -32,7 +32,6 @@ public abstract class AbstractDAO<T> {
             getEntityManager().getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("rollback");
             getEntityManager().getTransaction().rollback();
             return false;
         }
@@ -41,7 +40,6 @@ public abstract class AbstractDAO<T> {
 
     public boolean edit(T entity) {
 
-        System.out.println("edit: " + new Gson().toJson(entity));
         getEntityManager().getTransaction().begin();
         getEntityManager().merge(entity);
         getEntityManager().getTransaction().commit();
@@ -83,8 +81,7 @@ public abstract class AbstractDAO<T> {
     public List<T> findByPartName(String busca) {
         List<T> list = null;
         list = getEntityManager().createQuery("from " + nomeClasse + " f where f.nome like :busca").setParameter("busca", "%" + busca + "%").getResultList();
-        System.out.println(new Gson().toJson(list) + "\nTamanho:" + list.size());
-        return list;
+      return list;
     }
 
     public int count() {

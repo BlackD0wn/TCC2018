@@ -45,28 +45,26 @@ public class PedidoDAO extends AbstractDAO<Pedido> {
 
     public List<Pedido> procurarPorProduto(Produto p) {
         List<Pedido> list = null;
-        System.out.println(p.getId());
         try {
             list = getEntityManager().createQuery("from Pedido where produto_id = :busca").setParameter("busca", p.getId()).getResultList();
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         return list;
     }
 
     public boolean pedidosEmAberto(Produto p) {
         List<Pedido> list = new ArrayList<>();
-        System.out.println(p.getId());
         try {
             list = getEntityManager().createQuery("from Pedido where produto_id = :busca and enviado = false and recebido = false").setParameter("busca", p.getId()).getResultList();
+            list.addAll(getEntityManager().createQuery("from Pedido where produto_id = :busca and enviado = true and recebido = false").setParameter("busca", p.getId()).getResultList());
+            
             if (list.isEmpty()) {
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
 
         return true;
@@ -79,7 +77,6 @@ public class PedidoDAO extends AbstractDAO<Pedido> {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         return list;
     }
@@ -91,7 +88,6 @@ public class PedidoDAO extends AbstractDAO<Pedido> {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         return list;
     }
@@ -103,7 +99,6 @@ public class PedidoDAO extends AbstractDAO<Pedido> {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         return list;
     }
@@ -115,7 +110,6 @@ public class PedidoDAO extends AbstractDAO<Pedido> {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         return list;
     }
