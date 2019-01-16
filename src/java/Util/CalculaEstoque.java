@@ -9,6 +9,7 @@ import DAO.ConfiguracaoDAO;
 import DAO.PedidoDAO;
 import DAO.MovimentacaoDAO;
 import DAO.ProdutoDAO;
+import bean.Configuracao;
 import bean.Pedido;
 import bean.Movimentacao;
 import bean.Produto;
@@ -85,7 +86,9 @@ public class CalculaEstoque {
 
     public void calcular(Produto p) {
 
+        buscaMarguem();
         atualizaProduto(p);
+        this.diasParaCalcular = p.getDiasParaCalcularEstoque();
 
         float mediaGastoPorDia = CalculaGastoEmDias(p);
         float pontoDeRessuprimetoEmDias = p.getFornecedor().getPrazoDeEntrega() * margemSegurancaEntrega;
@@ -115,10 +118,9 @@ public class CalculaEstoque {
                 em.setAssunto("Pedido do produto " + em.getP().getNome());
                 em.setCorpo("Produto:" + em.getP().getNome() + "\nQuantidade: " + estoqueIdeal + "\nPrazo de Entrega: " + em.getProduto().getFornecedor().getPrazoDeEntrega() +"\n Preco: "+mdao.ultimoPrecoPorProduto(p)+"\n\nAtenciosamente,\n" + em.getConfig().getNomeFantasia());
                 em.setQuantidade(quantidadeAPedir);
-                PedidoDAO emDAO = new PedidoDAO();
-                emDAO.create(em);
+                pdao.create(em);
 
-            } else {
+            } else if(!pdao.pedidoAReceber(p)){
                 List<Pedido> naoEnviados = pdao.procurarNaoEnviadosPorProduto(p);
 
                 if (!naoEnviados.isEmpty()) {
@@ -133,6 +135,12 @@ public class CalculaEstoque {
 
         atualizaProduto(p);
 
+    }
+
+    private void buscaMarguem() {
+        ConfiguracaoDAO cdao = new ConfiguracaoDAO();
+        Configuracao c = cdao.find(cdao.count());
+        this.margemSegurancaEntrega = c.getMargemSegurancaEntrega();
     }
 
 }

@@ -41,10 +41,12 @@ public class ProdutoDAO extends AbstractDAO<Produto> {
     @Override
     public boolean edit(Produto entity) {
 
+        System.out.println("Antes: "+new Gson().toJson(entity));
         entity.setDataCadastro(this.find(entity.getId()).getDataCadastro());
 
         boolean retorno;
-        retorno = super.create(entity);
+        retorno = super.edit(entity);
+        System.out.println("passou edit");
         entity = this.find(entity.getId());
         try {
             CalculaEstoque ce = new CalculaEstoque();

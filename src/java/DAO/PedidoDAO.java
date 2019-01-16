@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Util.CalculadorDiferencaDatas;
 import bean.Movimentacao;
 import bean.Pedido;
 import bean.Produto;
@@ -54,6 +55,21 @@ public class PedidoDAO extends AbstractDAO<Pedido> {
         return list;
     }
 
+public boolean pedidoAReceber(Produto p) {
+        List<Pedido> list = new ArrayList<>();
+        try {
+            list = getEntityManager().createQuery("from Pedido where produto_id = :busca and enviado = true and recebido = false").setParameter("busca", p.getId()).getResultList();
+            if (list.isEmpty()) {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        
+        return true;
+    }
+    
     public boolean pedidosEmAberto(Produto p) {
         List<Pedido> list = new ArrayList<>();
         try {

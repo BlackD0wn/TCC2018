@@ -33,6 +33,15 @@ public class Configuracao {
     private String porta;
     private String email;
     private String senha;
+    private float margemSegurancaEntrega;
+
+    public float getMargemSegurancaEntrega() {
+        return margemSegurancaEntrega;
+    }
+
+    public void setMargemSegurancaEntrega(float margemSegurancaEntrega) {
+        this.margemSegurancaEntrega = margemSegurancaEntrega;
+    }
 
     public Configuracao() {
     }

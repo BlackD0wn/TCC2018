@@ -46,6 +46,15 @@ public class Produto {
     private float valorMovimentado;
     private float porcMovimentacao;
     private float mediaConsumo;
+    private int diasParaCalcularEstoque;
+
+    public int getDiasParaCalcularEstoque() {
+        return diasParaCalcularEstoque;
+    }
+
+    public void setDiasParaCalcularEstoque(int diasParaCalcularEstoque) {
+        this.diasParaCalcularEstoque = diasParaCalcularEstoque;
+    }
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro;
